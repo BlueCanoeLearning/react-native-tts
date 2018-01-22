@@ -7,6 +7,12 @@ declare module "react-native-tts" {
         quality: number;
     }
 
+    type TTSPlayerListenerType = "tts-start" | 
+                                "tts-finish" |
+                                "tts-pause" |
+                                "tts-resume" |
+                                "tts-progress" |
+                                "tts-cancel";
     interface TTSPlayer {
         getInitStatus(): Promise<void>;
 
@@ -27,6 +33,9 @@ declare module "react-native-tts" {
         pause(onWordBoundary: boolean): Promise<boolean>;
 
         resume(): Promise<boolean>;
+
+        addEventListener(type: TTSPlayerListenerType, handler: (utteranceId: number) => void);
+        removeEventListener(type: TTSPlayerListenerType, handler: (utteranceId: number) => void);
     }
 
     const TTSPlayer: TTSPlayer;
