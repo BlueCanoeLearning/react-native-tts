@@ -5,12 +5,15 @@ declare module "react-native-tts" {
         name: string;
         language: string;
         quality: number;
+        latency?: number; // android only
+        networkConnectionRequired?: boolean; // android only
+        notInstalled?: boolean; // android only
     }
 
     export interface TTSListenerResult {
         utteranceId: number;
-        location?: number;
-        length?: number;
+        location?: number; // tt-progress + ios only
+        length?: number; // tt-progress + ios only
     }
 
     export type TTSPlayerListenerType = "tts-start" | 
@@ -18,7 +21,8 @@ declare module "react-native-tts" {
                                 "tts-pause" |
                                 "tts-resume" |
                                 "tts-cancel" |
-                                "tts-progress";
+                                "tts-progress" | // ios only
+                                "tt-serror"; // android only
                                 
     interface TTSPlayer {
         getInitStatus(): Promise<void>;
@@ -36,8 +40,8 @@ declare module "react-native-tts" {
 
         speak(utterance: string, voiceId?: string): Promise<number>;
 
-        stop(onWordBoundary: boolean): Promise<boolean>;
-        pause(onWordBoundary: boolean): Promise<boolean>;
+        stop(onWordBoundary?: boolean): Promise<boolean>;
+        pause(onWordBoundary?: boolean): Promise<boolean>;
 
         resume(): Promise<boolean>;
 

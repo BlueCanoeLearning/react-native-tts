@@ -200,7 +200,7 @@ RCT_EXPORT_METHOD(voices:(RCTPromiseResolveBlock)resolve
     if(_ducking) {
         [[AVAudioSession sharedInstance] setActive:YES error:nil];
     }
-    
+    if(![[self supportedEvents] containsObject:@"tts-start"]) { return; }
     [self sendEventWithName:@"tts-start" body:@{@"utteranceId":[NSNumber numberWithUnsignedLong:utterance.hash]}];
 }
 
@@ -209,7 +209,7 @@ RCT_EXPORT_METHOD(voices:(RCTPromiseResolveBlock)resolve
     if(_ducking) {
         [[AVAudioSession sharedInstance] setActive:NO error:nil];
     }
-    
+
     [self sendEventWithName:@"tts-finish" body:@{@"utteranceId":[NSNumber numberWithUnsignedLong:utterance.hash]}];
 }
 
@@ -218,7 +218,7 @@ RCT_EXPORT_METHOD(voices:(RCTPromiseResolveBlock)resolve
     if(_ducking) {
         [[AVAudioSession sharedInstance] setActive:NO error:nil];
     }
-    
+    if(![[self supportedEvents] containsObject:@"tts-pause"]) { return; }
     [self sendEventWithName:@"tts-pause" body:@{@"utteranceId":[NSNumber numberWithUnsignedLong:utterance.hash]}];
 }
 
@@ -227,12 +227,13 @@ RCT_EXPORT_METHOD(voices:(RCTPromiseResolveBlock)resolve
     if(_ducking) {
         [[AVAudioSession sharedInstance] setActive:YES error:nil];
     }
-    
+    if(![[self supportedEvents] containsObject:@"tts-resume"]) { return; }
     [self sendEventWithName:@"tts-resume" body:@{@"utteranceId":[NSNumber numberWithUnsignedLong:utterance.hash]}];
 }
 
 -(void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer willSpeakRangeOfSpeechString:(NSRange)characterRange utterance:(AVSpeechUtterance *)utterance
 {
+    if(![[self supportedEvents] containsObject:@"tts-progress"]) { return; }
     [self sendEventWithName:@"tts-progress"
                        body:@{@"location": [NSNumber numberWithUnsignedLong:characterRange.location],
                               @"length": [NSNumber numberWithUnsignedLong:characterRange.length],
@@ -244,7 +245,7 @@ RCT_EXPORT_METHOD(voices:(RCTPromiseResolveBlock)resolve
     if(_ducking) {
         [[AVAudioSession sharedInstance] setActive:NO error:nil];
     }
-    
+    if(![[self supportedEvents] containsObject:@"tts-cancel"]) { return; }
     [self sendEventWithName:@"tts-cancel" body:@{@"utteranceId":[NSNumber numberWithUnsignedLong:utterance.hash]}];
 }
 
