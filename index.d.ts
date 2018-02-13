@@ -22,7 +22,7 @@ declare module "react-native-tts" {
                                 "tts-resume" |
                                 "tts-cancel" |
                                 "tts-progress" | // ios only
-                                "tt-serror"; // android only
+                                "tts-error"; // android only
                                 
     interface TTSPlayer {
         getInitStatus(): Promise<void>;
